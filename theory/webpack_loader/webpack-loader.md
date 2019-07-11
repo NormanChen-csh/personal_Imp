@@ -116,4 +116,4 @@ npm run build 可以在dist文件中看到打包出来的index.html文件中，l
 
 2. loader中是否有更多的操作方法？
 
-答： 是的loader中的source只是第一个参数，可以同在this.query获取在module.rules中配置的options参数。还有就是多个loader同步执行的时候使用this.callback(null,source,map,meta),可以更灵活的操作source。
+答： 是的loader中的source只是第一个参数，可以同在this.query获取在module.rules中配置的options参数。还有就是多个loader同步执行的时候使用this.callback(null,source,map,meta),可以更灵活的操作source,配置多个loader自下而上执行，在第一个loader中使用this.callback可以将参数传入第二个loader中。
