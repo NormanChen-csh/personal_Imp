@@ -15,6 +15,6 @@
           |---app.js
 ``` 
 
-3. 在node_modules目录下使用命令npm init生成一个package.json文件
+3. 在node_modules目录下使用命令npm init生成一个package.json文件(执行这一步的时候会有一些提示操作，比如对你包名的命名和描述，以及作者版本都会在这里输入)
 4. 在myModules文件夹目录下输入命令npm login登录npm，登录成功后再输入npm publish就将自己的包发送到npm服务器了
 5. 随便打开一个工程npm install 你自己的包名。
