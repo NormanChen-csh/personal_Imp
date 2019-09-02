@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let str = "abcabcabcabcbbccccccc"
+        let num = 0
+        let char = ''
+        str = str.split('').sort().join('')
+        console.log(str)
+
+        let re = /(\w)\1+/g
+        // let re = /(\w)+/g
+
+        str.replace(re, ($0, $1) => {
+            debugger
+            if (num < $0.length) {
+                num = $0.length;
+                char = $1
+            }
+
+        })
+        console.log(`字符最多的是${char},出现了${num}次`)
+    </script>
+</body>
+</html>
