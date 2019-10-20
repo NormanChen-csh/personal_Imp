@@ -1,0 +1,9 @@
+html(lang='en')
+    head
+        title= appTitle
+    body
+        p 这是一个#{route}文件下的文件
+        ul
+            each item in list
+                li
+                    a(href= '.'+ route + '/' + item)=item
