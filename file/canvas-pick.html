@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div style="width: 200px;height: 100px;color: #fff;" id="color"></div>
+    <script>
+        let img = new Image()
+        img.src = 'canvas-test.jpg'
+            // img.crossOrigin = 'anonymous'
+        const canvas = document.getElementById('canvas')
+        let ctx = canvas.getContext('2d')
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            img.style.display = 'none'
+        }
+        let color = document.getElementById('color')
+
+        function picColor(event) {
+            let x = event.layerX
+            let y = event.layerY
+            let pixel = ctx.getImageData(x, y, 1, 1)
+            let data = pixel.data
+            let rgba = `rgba(${data[0]},${data[1]},${data[2]},${data[3]})`
+            color.innerHTML = rgba
+            color.style.background = rgba
+        }
+
+        canvas.addEventListener('mousemove', picColor)
+    </script>
+</body>
+
+</html>
