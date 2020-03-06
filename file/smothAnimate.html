@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>平滑动画</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page {
+            position: relative;
+        }
+        
+        .wrapper {
+            width: 750px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            position: relative;
+            height: 80px;
+            width: 100%;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .showTabBar {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .content {
+            width: 100%;
+            height: 1312px;
+            background-color: #f0f0f0;
+        }
+        
+        .layer {
+            position: absolute;
+            top: 0;
+            width: 600px;
+            height: 1300px;
+            background-color: green;
+            z-index: 10;
+            /* transform: translateX(-100%); */
+            left: -600px;
+            background: url('https://dss0.bdstatic.com/6Ox1bjeh1BF3odCf/it/u=3097378621,1517430839&fm=74&app=80&f=JPEG&size=f121,90?sec=1880279984&t=7dcb802bd45e50b25868fc4d1302ffdc') repeat;
+            /* left: -600px;
+            transition: left 300ms linear; */
+            /* transform: translateX(-100%);
+            transition: transform 300ms linear; */
+            /* will-change: transform; */
+        }
+        
+        .layer-enter {
+            /* transform: translateX(0);
+            transition: transform 300ms linear; */
+            /* left: 0;
+            transition: left 300ms linear; */
+            animation: test 0.2s linear alternate 10;
+        }
+        
+        @keyframes test {
+            from {
+                /* transform: translateX(-100%); */
+                left: -600px;
+            }
+            to {
+                /* transform: translateX(100%); */
+                left: 600px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="page">
+            <div class="header">哈哈哈哈哈哈哈
+                <div style="margin:50px 0;"></div>
+                <img class="showTabBar" src="https://www.w3cplus.com/sites/all/themes/w3cplusV2/images/logo.png" alt="">
+            </div>
+            <div class="content">
+                <p style="margin:50px 0;">sdfsfsfsfd</p>
+                哈哈哈哈哈哈哈
+                <div style="margin:50px 0;"></div>
+            </div>
+
+        </div>
+        <div id="layer" class="layer">
+            <div style="margin:50px 0;">sdfsf</div>
+            <div style="margin:50px 0;">sdfsdfsdfs</div>
+            <div style="margin:50px 0;">sfsdfsf</div>
+        </div>
+    </div>
+    <script>
+        const layerNode = document.getElementById('layer')
+        const headerNode = document.querySelector('.showTabBar')
+        headerNode.addEventListener('click', function() {
+            if (document.querySelector('.layer-enter')) {
+                layerNode.classList.remove('layer-enter')
+            } else {
+                layerNode.classList.add('layer-enter')
+            }
+        })
+    </script>
+</body>
+
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .page {
+            position: relative;
+        }
+        
+        .wrapper {
+            width: 750px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            position: relative;
+            height: 80px;
+            width: 100%;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .showTabBar {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            width: 50px;
+            height: 50px;
+        }
+        
+        .content {
+            width: 100%;
+            height: 1312px;
+            background-color: #f0f0f0;
+        }
+        
+        .layer {
+            position: absolute;
+            top: 0;
+            width: 600px;
+            height: 1300px;
+            background-color: green;
+            z-index: 10;
+            /* transform: translateX(-100%); */
+            left: -600px;
+            /* background: url('https://dss0.bdstatic.com/6Ox1bjeh1BF3odCf/it/u=3097378621,1517430839&fm=74&app=80&f=JPEG&size=f121,90?sec=1880279984&t=7dcb802bd45e50b25868fc4d1302ffdc') repeat; */
+            background-color: green;
+            left: -600px;
+            transition: left 300ms linear;
+        }
+        
+        .layer-enter {
+            left: 0;
+            transition: left 300ms linear;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="page">
+            <div class="header">
+                <img class="showTabBar" src="https://www.w3cplus.com/sites/all/themes/w3cplusV2/images/logo.png" alt="">
+            </div>
+            <div class="content">
+
+            </div>
+
+        </div>
+        <div id="layer" class="layer">
+
+        </div>
+    </div>
+    <script>
+        const layerNode = document.getElementById('layer')
+        const headerNode = document.querySelector('.showTabBar')
+        headerNode.addEventListener('click', function() {
+            if (document.querySelector('.layer-enter')) {
+                layerNode.classList.remove('layer-enter')
+            } else {
+                layerNode.classList.add('layer-enter')
+            }
+        })
+    </script>
+</body>
+
+</html> -->
