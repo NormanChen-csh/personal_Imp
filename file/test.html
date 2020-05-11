@@ -31,12 +31,19 @@
 </head>
 
 <body>
-    <div class="box">
-        <div class="child_1">
-
-        </div>
-        <div class="child_2"></div>
-    </div>
+    <div id="xx">hdfsdfsfdhh</div>
+    <script>
+        let a = ''
+        let b = ''
+        document.getElementById('xx').addEventListener('click', function() {
+            a = Number(new Date().getTime())
+            console.log(a)
+        })
+        document.getElementById('xx').addEventListener('touchstart', function() {
+            b = Number(new Date().getTime())
+            console.log(b - a)
+        })
+    </script>
 </body>
 
 </html>
