@@ -64,3 +64,46 @@ SH使用方式就是引入**ModuleConcatenationPlugin**插件
 
 
 ### 5.多线程打包happypack/thread-loader/DllPlugin
+
+happyPack和thread-loader本质上是打开多线程来加快构建速度和打包速度，DllPlugin是通过预先生成一些包的构建文件，然后通过html直接引入来减少构建时间，对于引用包很多的项目来说，提升构建速度效果比较明显。
+
+dllplugin参考文章：[https://www.jb51.net/article/160144.htm]
+
+### 6.splitChunks抽离公共文件
+
+splitChunks其实本质上就是把大的JS依赖文件进行拆分，来达到加快加载的目的，在webpack4.0版本已经变成了默认配置，在使用了webpack4版本的项目打包出来的JS文件基本都是进行了拆分。
+
+延伸阅读：
+webpack的module/chunk/bundle区别
+
+module：就是js的模块化webpack支持commonJS、ES6等模块化规范，简单来说就是你通过import语句引入的代码。
+
+chunk: chunk是webpack根据功能拆分出来的，包含三种情况：
+
+　　　　1、你的项目入口（entry）
+
+　　　　2、通过import()动态引入的代码
+
+　　　　3、通过splitChunks拆分出来的代码
+
+　　　　chunk包含着module，可能是一对多也可能是一对一。
+
+bundle：bundle是webpack打包之后的各个文件，一般就是和chunk是一对一的关系，bundle就是对chunk进行编译压缩打包等处理之后的产出。
+
+### 7.sourceMap优化
+
+SourceMap是一种映射关系。当项目运行后，如果出现错误，错误信息只能定位到打包后文件中错误的位置。如果想查看在源文件中错误的位置，则需要使用映射关系，找到对应的位置。
+
+推荐方式
+
+开发环境
+devtool: 'cheap-module-eval-source-map',
+
+生产环境
+devtool: 'cheap-module-source-map',
+
+当然使用sourceMap必然会影响构建和打包速度，所以如果非必要的话可以设置为false。
+
+## 总结
+
+对于前端项目基于打包工具的优化，主要集中在前5点，后面的两点在最新的webpack4.0中都已变为可配置项，如果是低版本可以引入相关插件进行配置。
