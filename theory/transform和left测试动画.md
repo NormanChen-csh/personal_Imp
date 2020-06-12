@@ -21,7 +21,7 @@
 
 由于页面结构不复杂以及动画非常简单，帧数基本都是60左右，但是如果加上will:change属性，或者transform: translateZ(0),也就是GPU引擎加速，可以极小的提升帧率的稳定，但是效果不太明显。所以得出结论：在基础简单的页面中，简单切换动画使用left或者transform改变dom位置对动画的连贯影响不大。
 
-![animation](./animation.gif)
+![animation](./img/animation.gif)
 
 既然在简单页面看不出transform的优越性，那我们需要更复杂的页面和更加复杂的动画来继续测试
 
@@ -74,18 +74,18 @@
 
 ### 现在我们来看一下使用left的帧率是什么样子的，以下截图都是经过多次测试选出最能代表帧率的一张
 
-![animation_3](./animation_3.png)
+![animation_3](./img/animation_3.png)
 
 可以看出有很多的锯齿状，这表示不太稳定,当我把GPU加速变成减6倍时，事情发生了，很多不规则的锯齿出现，整个动画变得不流畅了。
 
-![animation_4](./animation_4.png)
+![animation_4](./img/animation_4.png)
 
 
 ### 下面我们来试试transform如何
 
 普通情况下和left是差不多的但是把GPU减六倍之后效果就有点不一样了,虽然帧率不太稳定但是相对于left实现，已经好很多了
 
-![animation_6](./animation_6.png)
+![animation_6](./img/animation_6.png)
 
 ## 总结
 
