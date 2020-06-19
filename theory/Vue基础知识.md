@@ -278,3 +278,111 @@ $on: 可以多个事件绑定同一个回调函数(数组) this.\$on(string/arra
 1. 对第一个参数做一个是否为数组的判断，这里可以看出$on允许为多个事件绑定同一个回调函数。
 2. 如果参数为数组，那么它会使用for遍历这个数组，并进行递归。
 3. 如果参数为字符串，那么它会在已有的事件(_events,供$emit调用)中寻找是否已经存在相同的事件，如果有就不处理vm.events[name],如果没有会创建并**初始化为空数组**同时将传递的第二个参数也就是事件被触发时需要执行的回调函数添加push进去。
+
+
+# 22. computed和watch方法原理对比
+
+computed方法其实是一个惰性求值的订阅者，他在对比新旧值的时候回去检查这个值相关的订阅数组，如果长度大于0代表有订阅者，值改变就更新
+如果订阅数组中没有watcher，computed只会把this.dirty这个值设置为true，不进行相关计算，节约性能
+
+$watch方法比较核心的就是会去把this.user设置为true，代表是用户自己创建的watcher（后面watcher的run方法会作判断 用来抛异常），还会去判断immediate参数，用来判断是否立即执行。
+$watch()本质还是创建一个Watcher实例对象。返回的是watcher.teardown()解除当前观察者对属性的观察
+
+vm.$watch 返回一个取消观察函数，用来停止触发回调：
+
+var unwatch = vm.$watch('a', cb)
+// 之后取消观察
+unwatch()
+
+以watch: {}方法和this.$watch方法写侦听器的区别
+
+watch方法和$watch不会默认立即执行，只有配置了immediate属性才会，
+watch方法会自己注销侦听器，但是$watch 需要手动注销侦听器
+watch方法配置deep和immediate需要用到handler函数
+
+# 23. patch函数过程
+
+
+diff的过程就是调用名为patch的函数，比较新旧节点，一边比较一边给真实的DOM打补丁。
+
+patch方法会优先判断新旧节点是否相同（有判断相同的方法sameVnode()）,如果不相同直接替换返回新的vnode了。如果发现新旧节点相同就开始后续比较
+
+```javascript
+
+  function patch (oldVnode, vnode) {
+    // 此时vnode.el说的是真实的dom 在patch完之前他是空的
+    if (sameVnode(oldVnode, vnode)) {
+        patchVnode(oldVnode, vnode)
+    } else {
+        const oEl = oldVnode.el
+        let parentEle = api.parentNode(oEl)
+        createEle(vnode)  // 创建真实dom
+        if (parentEle !== null) {
+            api.insertBefore(parentEle, vnode.el, api.nextSibling(oEl))
+            api.removeChild(parentEle, oldVnode.el)
+            oldVnode = null
+        }
+    }
+    return vnode
+    //patch最后会返回vnode，vnode和进入patch之前的不同在哪？就是vnode.el，唯一的改变就是之前vnode.el = null, 而现在它引用的是对应的真实dom。
+
+```
+
+需要注意的是，el属性引用的是此 virtual dom对应的真实dom，patch的vnode参数的el最初是null，因为patch之前它还没有对应的真实dom。
+
+
+下面看patchNode方法，用来对值得比较的新旧节点做处理（值得比较的意思是，key sel这些参数相同才值得，这个方法比较简单）
+
+
+## 值得比较的节点有五种对比情况
+
+首先分为3种
+
+1. oldVnode === vnode 新老节点的引用一致，就直接不改变了
+2. 文本节点的比较，如果文本节点不同，会调用setTextContent()方法去修改
+3. 除了文本节点不同以外所有的情况
+
+其次分为以下3种
+
+1. oldCh && ch && oldCh !== ch 两个节点都有子节点，而且他们不一样，这样就会调用updateChildren方法来比较子节点，这个是diff算法的核心
+2. 只有新节点有子节点，调用createEle(vnode)，**vnode.el已经引用了老的dom节点，**createEle函数会在老dom节点上添加子节点。
+3. 新节点没有子节点，老节点有子节点，直接删除老节点。
+
+```javascript
+  updateEle(el, vnode, oldVnode)
+  if (oldCh && ch && oldCh !== ch) {
+      updateChildren(el, oldCh, ch)
+  }else if (ch){
+      createEle(vnode) //create el's children dom
+  }else if (oldCh){
+      api.removeChildren(el)
+  }
+
+```
+
+# 24. diff 算法
+
+diff算法的存在,是用来对比两个都有子节点的新旧节点（vnode, oldVnode）的不同，他只会进行同级比较，也是updateChildren（）方法的核心
+
+首先diff算法会初始化出四个变量，分别是新旧节点头尾，oldStart、oldEnd、start、end,再把它们两两比较，一共有四中比较方式
+
+他一共分为五步
+
+1. 头头比较，匹配中了oldStart,start 索引加一往后移。没匹配中就下一步
+2. 尾尾比较，匹配中了oldStart,start 索引减一往前移。没匹配中就下一步
+3. 头尾比较，匹配中了旧头指针后移，新尾指针前移，未确认dom序列（还没有确定位置的dom节点序列）中的头移到尾，进入下一次循环。没匹配中就下一步
+4. 尾头比较，匹配中了新头指针后移（即 oldEnd-- && start++），未确认dom序列中的尾移到头，进入下一次循环,没匹配中进入下一部
+5. 若节点有key且在旧子节点数组中找到sameVnode（tag和key都一致），则将其dom移动到当前真实dom序列的头部，新头指针后移（即 newStartIdx++）；否则，vnode对应的dom（vnode[newStartIdx].elm）插入当前真实dom序列的头部，新头指针后移（即 newStartIdx++）。其实就是根据新旧节点的key和target来确定插入到未确认序列的头部来定位，此时还剩下未确认序列，
+
+循环结束后还有两种情况
+
+新的字节点数组（newCh）被遍历完（start > end）都删除；新的先遍历完了就把多的删除
+新的字节点数组（oldCh）被遍历完（oldstart > oldend）。那就需要把多余的新dom（start -> end）都添加。老的先遍历完就把多的添加
+
+# 25. vuex原理
+
+vuex使用过Vue.use()方法的插件机制，调用vuex的install方法来装载vuex的。
+而vuex的install方法使用的是vue.mixin方法 混入机制，混入了beforeCreate这个钩子，然后把store的相关方法关联到对应的组件实例上
+
+Vuex的state状态是响应式，是借助vue的data是响应式，将state存入vue实例组件的data中；
+Vuex的getters则是借助vue的计算属性computed实现数据实时监听。
