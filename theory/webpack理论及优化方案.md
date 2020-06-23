@@ -77,3 +77,17 @@ webpack的核心负责编译的模块compiler和负责创建bundles的compilatio
 4. webpack-merge 
    
 用来将不同环境下的配置和基础公共配置合并，其中涉及到了数组和对象的合并
+
+
+## terser-webpack-plugin代码压缩和缓存插件
+
+terser-webpack-plugin可以通过parallel和cache配置来并行处理并缓存之前的编译结果。加快编译速度
+原来使用的uglifyJS已经不维护了不支持ES6语法
+
+## 加快编译速度的几个步骤方法
+
+1. terser-webpack-plugin的cash
+2. babel-loader的cache配置来缓存babel的编译结果。
+3. 通过IgnorePlugin设置对一些不需要的文件进行忽略，来防止将所有的本地化文件进行打包，加快打包速度。
+
+优化思路就是–>开多线程，尽可能地做增量编译，加缓存用空间换时间。
