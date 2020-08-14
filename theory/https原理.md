@@ -2,7 +2,7 @@
 
 ## https介绍
 
-http = ssl + http
+http =  http + ssl
 所以他们都是基于tcp/ip协议，是通过三次握手确定链接，再执行ssl证书验证传输信息
 
 ## https和http的区别

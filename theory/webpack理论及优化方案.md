@@ -44,7 +44,7 @@ Plugin 在 plugins 中单独配置，类型为数组，每一项是一个 Plugin
 
 compiler是webpack的一个模块，是webpack的主要引擎，通过他可以创建一个compilation实例，
 而且所有通过cli、webpack的api、webpack配置文件等传入的配置，都会作为参数来构建一个compilation实例。
-可以通过webpack。compiler来访问他。
+可以通过webpack.compiler来访问他。
 webpack通过实例化一个compiler对象，然后通过调用他的run方法来开始一次完整的编译过程
 
 ## 4. webpack的tapable是什么

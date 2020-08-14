@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lazyload</title>
+    <style>
+        body {
+            width: 100%;
+        }
+        
+        div {
+            width: 100%;
+            height: 400px;
+        }
+        
+        img {
+            width: 100%;
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <img id="imgs" src="" data-src="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3031982690,2445825051&fm=115&gp=0.jpg">
+    <script>
+        document.body.onscroll = function() {
+            const screenHeight = document.documentElement.clientHeight
+            const element = document.getElementById('imgs')
+            let picUrl = element.getAttribute('data-src')
+
+            let scrollTop = document.documentElement.scrollTop // document.body.scrollTop  非DTD模式
+            let offsetTop = element.offsetTop
+            console.log(offsetTop, scrollTop, screenHeight)
+            if (offsetTop - scrollTop < screenHeight) {
+                element.setAttribute('src', picUrl)
+            }
+        }
+    </script>
+</body>
+
+</html>

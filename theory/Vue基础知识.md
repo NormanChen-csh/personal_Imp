@@ -240,7 +240,9 @@ props的的验证运用了校验器模式，简单来说，就是把函数开头
 用config.plugins.delete('prefetch')删除或者更改配置项
 5. 组件重复打包，可以在webpack的config文件中，修改CommonsChunkPlugin（webpack4=>SplitChunksPlugin）的配置，
 minChunk:2 把使用了两次的包抽出来放进公共依赖
-6. 拆完包之后，我们再用gzip做一下压缩,安装compression-webpack-plugin
+6. 拆完包之后，我们再用gzip做一下压缩,安装compression-webpack-plugin （请求头中有个Accept-Encoding来标识对压缩的支持，响应头有一个Content-Encoding: gzip这是指服务端使用了gzip的压缩方式。
+
+
 ```javascript
   new CompressionPlugin({
     test: /\.js$|\.html$|\.css/, //匹配文件名
@@ -336,11 +338,10 @@ patch方法会优先判断新旧节点是否相同（有判断相同的方法sam
 
 ### 值得比较的节点有五种对比情况
 
-首先分为3种
+首先分为2种
 
 1. oldVnode === vnode 新老节点的引用一致，就直接不改变了
-2. 文本节点的比较，如果文本节点不同，会调用setTextContent()方法去修改
-3. 除了文本节点不同以外所有的情况
+2. 文本节点的比较，如果文本节点不同，会调用setTextContent()方法去修改； 除了文本节点不同以外所有的情况
 
 其次分为以下3种
 
@@ -386,3 +387,10 @@ vuex使用过Vue.use()方法的插件机制，调用vuex的install方法来装�
 
 Vuex的state状态是响应式，是借助vue的data是响应式，将state存入vue实例组件的data中；
 Vuex的getters则是借助vue的计算属性computed实现数据实时监听。
+
+
+## 26. vue.use()原理
+
+Vue.use(plugin, arguments)
+plugin 可以传入一个对象，也可以传一个一个函数，如果传入一个对象，对象中必须包括install方法，但是如果传入函数的话this的指针为null（plugin.apply(null, args)），传入对象的话调用install方法
+会 plugin.install.apply(plugin, args)把this指向该插件
