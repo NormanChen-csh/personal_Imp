@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/lodash.js/4.17.20/lodash.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .box {
+      /* width: 750px; */
+      height: 200px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    
+  </div>
+  <script>
+    console.log(document.querySelector('.box').innerHTML = window.innerWidth)
+    let objA = {
+      a: '第3',
+      b: '颈椎',
+      c: '左侧棘突',
+      d: '完全骨折'
+    }
+
+    let objB = {
+      a: '第5',
+      b: '颈椎',
+      c: '锥弓',
+      d: '完全骨折'
+    }
+
+    function getReport(arr) {
+     let temp =  _.groupBy(arr, (e) => {
+       return [e.a, e.b, e.c].join('/')
+     })
+
+     console.log(temp)
+    }
+
+    getReport([objA, objB])
+  </script>
+</body>
+</html>

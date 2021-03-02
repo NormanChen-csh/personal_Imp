@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let canvasNode = document.createElement('canvas')
+        canvasNode.style.width = '100vw'
+        canvasNode.style.height = "100vh"
+        canvasNode.style.position = 'fixed'
+        canvasNode.style.left = 0
+        canvasNode.style.top = 0
+        canvasNode.style.zIndex = 99999
+        canvasNode.setAttribute('id', 'cvs')
+        canvasNode.setAttribute('width', window.innerWidth)
+        canvasNode.setAttribute('height', window.innerHeight)
+
+        document.body.appendChild(canvasNode)
+        let lastPosX = 0
+        let lastPosY = 0
+
+
+        document.getElementById('cvs').onclick = (e) => {
+
+            if (lastPosX && lastPosY) {
+                document.getElementById('cvs').onmousemove = null
+                lastPosX = 0
+                lastPosY = 0
+                return
+            }
+
+            lastPosX = e.pageX
+            lastPosY = e.pageY
+
+            document.getElementById('cvs').onmousemove = (e) => {
+                let cvs = document.getElementById('cvs')
+                let ctx = cvs.getContext('2d');
+
+                var canvasHeight = ctx.canvas.height; //计算canvas画布的高度
+                var canvasWidth = ctx.canvas.width; //获取画布的宽度
+
+
+                ctx.lineWidth = 2
+                ctx.strokeStyle = "red";
+                // console.log(`鼠标在页面位置(${e.pageX}, ${e.pageY})`)
+                ctx.beginPath();
+                ctx.moveTo(lastPosX, lastPosY)
+                ctx.lineTo(e.pageX, e.pageY)
+                    // ctx.arc(e.pageX, e.pageY, 5, 0, Math.PI * 2, true)
+                ctx.stroke();
+
+                lastPosX = e.pageX
+                lastPosY = e.pageY
+            }
+        }
+    </script>
+</body>
+
+</html>

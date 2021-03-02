@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "Launch Chrome",
+      "request": "launch",
+      "type": "pwa-chrome",
+      "url": "http://localhost:1995",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "pwa-chrome",
+      "name": "https://localhost:5050",
+      "request": "launch",
+      "url": "https://localhost:5050"
+    }
+  ]
+}
