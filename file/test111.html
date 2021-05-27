@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html,
+        body,
+        div,
+        ul,
+        li,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        dl,
+        dt,
+        dd,
+        ol,
+        form,
+        input,
+        textarea,
+        th,
+        td,
+        select {
+            margin: 0;
+            padding: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: SimSun;
+            font-size: 14px;
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: normal;
+        }
+
+        ul,
+        ol {
+            list-style: none;
+        }
+
+        img {
+            border: none;
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+            color: #232323;
+        }
+
+        table {
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        input,
+        textarea {
+            outline: none;
+            border: none;
+        }
+
+        textarea {
+            resize: none;
+            overflow: auto;
+        }
+
+        .right-flex-box {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .report__box {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .report__box .report__control {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: flex-end;
+            padding: 12px 16px;
+            color: white;
+            background: white;
+            border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+
+        .report__box .report__control .icon-relative {
+            width: 16px;
+            height: 16px;
+            position: relative;
+            top: 1px;
+            color: #e9e9e9;
+        }
+
+        .page-border {
+            width: 100%;
+            height: 20px;
+            text-align: right;
+        }
+
+        .editor_print-editor {
+            display: block;
+            padding: 10px 15px 10px 15px;
+            width: 712px;
+            word-break: break-all;
+            /*  */
+        }
+
+        .ttph-print .editor_print-editor {
+            display: block;
+        }
+
+        .editor_print-editor .bound_img img {
+            width: auto;
+        }
+
+        .editor_print-editor img {
+            width: 30%;
+            margin: 5px auto;
+            max-height: 250px;
+        }
+
+        .editor_print-editor .editor-image {
+            width: 30%;
+            margin: 5px auto;
+            max-height: 250px;
+        }
+
+        .print__box {
+            display: flex;
+            flex-direction: column;
+            min-height: 945px;
+            justify-content: space-between;
+            padding: 0 6%;
+        }
+
+        .print__box p {
+            line-height: 36px !important;
+        }
+
+        .print__box.force-block {
+            display: block !important;
+        }
+
+        .print__box.force-block .write__box,
+        .print__box.force-block .print_content {
+            display: block !important;
+        }
+
+        .print__box .errorText {
+            color: #f5222d;
+            font-size: 12px;
+        }
+
+        .print__box .report__title {
+            min-height: 90px;
+            box-sizing: content-box;
+            position: relative;
+            padding: 16px 107px;
+            text-align: center;
+            font-weight: bold;
+            border-bottom: solid 1px #e9e9e9;
+        }
+
+        .print__box .report__title .title-medical {
+            font-size: 24px;
+        }
+
+        .print__box .report__title .title-hospital {
+            font-size: 18px;
+        }
+
+        .print__box .report__title .title-doctor {
+            font-size: 16px;
+            margin-top: 2px;
+        }
+
+        .print__box .report__title .newshow-qrcode {
+            position: absolute;
+            width: 100px;
+            text-align: center;
+            left: 80%;
+            top: 16px;
+        }
+
+        .print__box .report__title .newshow-qrcode span {
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .print__box .maxheighttiele {
+            height: 128px;
+            box-sizing: border-box !important;
+        }
+
+        .print__box .noxpHeight {
+            height: 140px;
+        }
+
+        .print__box .report__info {
+            display: flex;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .print__box .report__info .info__box {
+            display: flex;
+            min-width: 24%;
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.67);
+            align-items: center;
+        }
+
+        .print__box .report__info .info__box {
+            min-width: 31%;
+            height: 100%;
+            padding-left: 12px;
+            border-left: 1px solid #303030;
+            font-weight: 400;
+        }
+
+        .print__box .report__info .info__box:first-child {
+            border-left: none;
+        }
+
+        .print__box .report__info .info__box span {
+            font-size: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        .print__box .report__info .info__box .title {
+            flex-shrink: 0;
+            display: inline-block;
+            width: 73px;
+            text-align: justify;
+            overflow: hidden;
+            font-size: 14px;
+            vertical-align: middle;
+            text-align-last: justify;
+        }
+
+        .print__box .report__info .info__box .info__box-input {
+            font-size: 14px;
+        }
+
+        .print__box .report__info .info__box .info {
+            flex: 1;
+            display: inline-block;
+            vertical-align: middle;
+            text-overflow: ellipsis;
+        }
+
+        .print__box .report__info .info__box.all-line-info__box {
+            width: 100%;
+        }
+
+        .print__box .write__box {
+            padding: 0 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .print__box .write__box .editor__box {
+            margin-bottom: 10px;
+            position: relative;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .print__box .write__box .editor__box .images-content {
+            display: flex;
+        }
+
+        .print__box .write__box .editor__box .img-thumb-container {
+            position: relative;
+        }
+
+        .print__box .write__box .editor__box .img-thumb-container .img-thumb-container-index {
+            position: absolute;
+            left: 100px;
+            bottom: 10px;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 3px 7px;
+            border-radius: 4px;
+        }
+
+        .print__box .write__box .editor__box .title {
+            margin-bottom: 5px;
+            color: rgba(0, 0, 0, 0.85);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .print__box .write__box .editor__box .images-content {
+            margin: 16px;
+        }
+
+        .print__box .write__box .editor__box .w-e-text-container,
+        .print__box .write__box .editor__box .el-input__inner {
+            color: rgba(0, 0, 0, 0.85);
+            font-size: 14px;
+        }
+
+        .print__box .write__doctor {
+            padding: 12px 12px;
+            margin-bottom: 16px;
+            color: rgba(0, 0, 0, 0.67);
+            page-break-inside: avoid;
+        }
+
+        .print__box .write__doctor .doctor__reporter {
+            width: 50%;
+        }
+
+        .print__box .write__doctor .doctor__reporter.expter {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .print__box .write__doctor .doctor__reporter.expter .doctor__box {
+            min-width: 50%;
+            flex: 1;
+        }
+
+        .print__box .write__doctor .doctor__reporter .doctor__box {
+            display: flex;
+            line-height: 32px;
+        }
+
+        .print__box .write__doctor .doctor__reporter .title {
+            display: inline-block;
+            width: 130px;
+            text-align: justify;
+            font-size: 14px;
+            vertical-align: middle;
+            text-align-last: justify;
+        }
+
+        .print__box .write__doctor .doctor__reporter .info {
+            display: inline-block;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .print__box .write__doctor .doctor__reporter .info img {
+            vertical-align: middle;
+            margin-top: -9px;
+        }
+
+        .print__box .print_content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .print__suggest {
+            border-top: 1px solid #e9e9e9;
+            padding: 16px 16px 0 0;
+            margin-top: 8px;
+            width: 100%;
+            font-size: 12px;
+        }
+
+        /**           * en cover           */
+        .report__box.en .report__info .info__box .title {
+            width: 135px;
+            text-align: right;
+        }
+
+        .report__box.en .write__doctor .doctor__reporter .title {
+            width: 200px;
+            text-align: right;
+        }
+
+        .w-editor {
+            font-size: 14px;
+            word-break: break-all;
+            flex: 1;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0 0 0 10px;
+            }
+
+            * {
+                font-weight: 500;
+                color: rgba(0, 0, 0, 0.9) !important;
+            }
+
+            /* */
+            .Noprint {
+                display: none;
+            }
+
+            .editor_print-editor {
+                clear: both;
+                padding: 0 15px 10px 15px;
+                width: 685px;
+                height: auto !important;
+                word-break: break-all;
+                line-height: 1.5;
+            }
+
+            .w-editor {
+                border: 1px solid red;
+                background: rgba(0, 0, 0, 0.9);
+                page-break-after: always;
+            }
+
+            .print__box .write__box .editor__box .title {
+                font-size: 14px;
+            }
+
+            .print-font {
+                font-size: 14px;
+            }
+
+            body {
+                position: relative;
+                display: flex;
+                width: 100%;
+                margin: 0;
+                display: inline-block;
+            }
+
+            .print__box {
+                width: 770px;
+                display: flex;
+                overflow: auto;
+                height: auto;
+                min-height: 850px;
+                max-height: max-content;
+                padding: 0 30px;
+                font-size: 14px;
+            }
+
+            .print__box .for-break {
+                page-break-inside: avoid;
+            }
+
+            .print__box .report-table {
+                width: 100%;
+                font-size: 16px;
+                text-align: left;
+                border: 1px solid #dedede;
+                position: relative;
+                border-collapse: collapse;
+            }
+
+            .print__box .report-table-thead {
+                color: rgba(0, 0, 0, 0.9);
+                position: relative;
+                height: 20px;
+                line-height: 20px;
+                overflow: hidden;
+                font-weight: 500;
+            }
+
+            .print__box .report-table-thead::after {
+                position: absolute;
+                left: 0;
+                top: 0;
+                display: block;
+                content: "";
+                height: 0;
+                border-bottom: 20px solid #eeeeee;
+                width: 100%;
+            }
+
+            .print__box .report-table-thead_text {
+                position: relative;
+                z-index: 11;
+            }
+
+            .print__box .report-table th,
+            .print__box .report-table td {
+                padding: 0 24px;
+                height: 20px;
+                line-height: 20px;
+            }
+
+            .print__box .report-table th.report-table-thead_border::after {
+                content: "";
+                position: absolute;
+                right: -1px;
+                top: 0;
+                width: 0;
+                height: 100%;
+                z-index: 11;
+                border-left: 1px solid #dedede;
+            }
+
+            .print__box .report-table td {
+                border: 1px solid #dedede;
+                color: black;
+            }
+
+            .print__box .report__title {
+                padding: 0 95px 16px 95px;
+                box-sizing: content-box;
+            }
+
+            .print__box .report__title .newshow-qrcode {
+                top: 0;
+            }
+
+            .print__box .report__title .newshow-qrcode img {
+                max-width: 100% !important;
+            }
+
+            .print__box .report__title .newshow-qrcode span {
+                font-size: 14px;
+            }
+
+            .print__box .report__info {
+                border-bottom: solid 1px #e9e9e9;
+                margin-bottom: 10px;
+            }
+
+            .print__box .write__box .editor__box .w-e-text {
+                padding: 0 32px;
+            }
+
+            .print__box .write__doctor {
+                flex-wrap: wrap;
+                width: 100%;
+            }
+
+            .print__box .report__title {
+                font-weight: bold;
+            }
+
+            .info.print-font {
+                color: rgba(0, 0, 0, 0.9) !important;
+            }
+
+            .print__box .write__box .editor__box .title {
+                font-size: 14px;
+                margin-top: 15px;
+            }
+
+            .print__box .write__box .editor__box .w-e-text-container,
+            .print__box .write__box .editor__box .el-input__inner {
+                font-size: 14px;
+            }
+
+            .print__box .report__info .info__box {
+                min-width: 24%;
+                padding-right: 10px;
+                width: auto;
+            }
+
+            .print__box .report__info .info__box .title {
+                width: 73px;
+            }
+
+            .editor__active {
+                border: none !important;
+            }
+
+            .print_content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
+        /*# sourceMappingURL=test.css.map */
+        .ttph-print {
+            padding: 60px 30px 0;
+        }
+
+        .ttph-print .print_content {
+            width: 100%;
+            flex: initial;
+        }
+
+        .ttph-print .report__title .newshow-qrcode {
+            width: 67px;
+            text-align: center;
+        }
+
+        .ttph-print .report__title .newshow-qrcode .qrcode-wrap {
+            text-align: center;
+        }
+
+        .ttph-print .report__title .newshow-qrcode .qrcode-text {
+            display: block;
+            width: 61px;
+            height: 16px;
+            margin: 6px auto;
+        }
+
+        .ttph-print .title-hospital {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .ttph-print .title-hospital {
+            font-size: 34px !important;
+            color: rgba(0, 0, 0, 0.85);
+            line-height: 48px;
+            font-weight: 400;
+        }
+
+        .ttph-print .title-doctor {
+            font-size: 34px !important;
+            font-weight: bold;
+            color: rgba(0, 0, 0, 0.85);
+            line-height: 48px;
+            letter-spacing: 13px;
+        }
+
+        .ttph-print .hospital-logo {
+            position: absolute;
+            width: 175px;
+            height: 68px;
+            left: 0;
+            top: 20px;
+        }
+
+        .ttph-print .hospital-logo img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .ttph-print .report__title {
+            border-bottom: none;
+        }
+
+        .ttph-print .sec-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 18px;
+            color: rgba(0, 0, 0, 0.85);
+        }
+
+        .ttph-print .write__doctor {
+            border: 2px solid #000;
+            padding: 0;
+            margin-top: 11px;
+            page-break-inside: auto !important;
+            min-height: 850px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ttph-print .write__doctor .report__info {
+            height: 51px;
+            line-height: 51px;
+            border-bottom: 2px solid #000;
+        }
+
+        .ttph-print .write__doctor .report__info .info__box {
+            min-width: 31%;
+            height: 100%;
+            padding-left: 12px;
+            border-left: 2px solid #303030;
+            font-weight: 400;
+            flex: 1;
+        }
+
+        .ttph-print .write__doctor .report__info .info__box span {
+            font-size: 20px;
+            white-space: nowrap;
+        }
+
+        .ttph-print .write__doctor .report__info .info__box:first-child {
+            border-left: none;
+        }
+
+        .ttph-print .write__box .check-title {
+            font-size: 18px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: bold;
+            color: rgba(0, 0, 0, 0.85);
+            line-height: 30px;
+        }
+
+        .ttph-print .write__box .check-title span {
+            font-weight: 500;
+        }
+
+        .ttph-print .write__box .editor__box .title {
+            font-size: 18px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: bold;
+            color: rgba(0, 0, 0, 0.85);
+            line-height: 30px;
+            position: relative;
+        }
+
+        .ttph-print .write__box .mh::after {
+            position: absolute;
+            content: "：";
+            left: 75px;
+        }
+
+        .ttph-print .write__box .editor_print-editor {
+            font-size: 18px;
+        }
+
+        .ttph-print .doctor__reporter {
+            display: flex;
+            width: 100% !important;
+            padding-bottom: 16px;
+        }
+
+        .ttph-print .doctor__box {
+            padding: 0 16px;
+        }
+
+        .ttph-print .doctor__box:nth-child(2) {
+            margin-left: 50px;
+        }
+
+        .ttph-print .doctor__box .title {
+            width: auto !important;
+            font-size: 18px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: bold;
+            text-align: left !important;
+            white-space: nowrap;
+        }
+
+        .ttph-print .print__suggest {
+            border-top: none;
+            padding: 0;
+            font-size: 16px;
+            margin-top: 0;
+        }
+
+        .editor_print-editor img {
+            width: 30%;
+            margin: 5px auto;
+            max-height: 250px;
+        }
+
+        .editor_print-editor .editor-image {
+            width: 30%;
+            margin: 5px auto;
+            max-height: 250px;
+        }
+
+        .editor_print-editor .images-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .editor_print-editor .images-content .node-img-item {
+            display: inline-block;
+        }
+
+        .editor_print-editor .images-content .node-img-item img {
+            width: 150px;
+            height: 150px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .editor_print-editor .images-content .node-img-item .img-thumb-list {
+            width: 190px;
+            margin-left: 0;
+        }
+
+        .editor_print-editor .images-content .node-img-item .img-thumb-list li {
+            line-height: 18px;
+            text-align: center;
+        }
+
+        /*# sourceMappingURL=test.css.map */
+    </style>
+</head>
+
+<body>
+    <div class="ttph-print print__box print__show" :class="LANG" ref="printBox" id="print">
+        <div class="print_content">
+            <div class="report__title maxheighttiele">
+                <div class="title-medical" v-if="taskSet.head_medical_association_name"> </div>
+                <div class="title-hospital"> 北京天坛普华医院 </div>
+                <div class="title-doctor"> 影像诊断报告单 </div>
+                <div class="newshow-qrcode" style="display: block">
+                    <div ref="ttph_qrcode" class="qrcode-wrap"> <img alt="Scan me!"
+                            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAYAAAA4TnrqAAACQklEQVR42u2cy47DMAwD/f8/nb0XG0MiR04fDNBDi8KJJ5FNUXbWWutSPq/H3e93x1171fNWz9dtf3feFVgCrG4nu5124XW/u5D/+39gObDUk6nh2m2/ezNIuIF1EhY1AKvtVG9SYH0aLHeqpsKFvr7AomGp0kGdANQBvisy30pn/RQsNd351O+P5IY/BesaPlxxqw7w3XSr1JfAavVFCzs3TCnLpZr+uOEbWCos1SpRH3PK/JsyJbdhGFgFWG7iSw+w09JAtYICqwurm3i6Vglx0Q5sp5+BpcByp/wp84++SWqpL7C6sNySlCtiuxAoa0eZwAJLgUVZNFTnaXORKJ0FFiFKpxZiuPaxG3bqsoLAcmFRU/DpoixlLVljVmABuSFVYqIkCX39JfMvsDawpgoQUxbNUyI6sFRYqog7Fb7qdZFmZGApax3cx9cVfe55aIumtLQ7sISFIa69TFk01XCiSl5biyawDPOPSnSnws21mx3pE1gOrOkpvwtXvS7XBNzqrMAyRGl3YD1dUnMtGqWdwJrYb0gvBFGlCr3sUtJZgSXAmtpSR5mBbuLsbJwKrAlYqgilzb2p5ZmoRRNYmwGeXF7oJLa0CHXCNLA6sC7zoMNo+iUY6k0KrC4s6rGlN36rAzOx7eTWogksARYddqfNO1eaVH4PLAcWZbm4U707YdCSIrCegqWKUSohnkqbRt5FE1jAUp6pkppboJBKYYFlwFITWaI8TkgPOoEOLBcW/TjTEoBK0B2ogfVO76L5puMPvNg/xpI26FMAAAAASUVORK5CYII="/>
+                            </div> <p style="margin-left:-65px;width: 200px;">请扫描二维码查看电子胶片</p> <!-- 扫描浏览云胶片 -->
+                    </div>
+                    <div class="hospital-logo"> <img src="./img/ttph-logo.png" alt=""> </div>
+                </div>
+                <div class="sec-info"> <span>检查日期:&nbsp;2018/02/14</span> <span>检查编号:&nbsp;DX11776688</span> </div>
+                <!-- <div @click="addReport('bone')">添加骨龄报告</div>        <div @click="addReport('chest')">添加肺报告</div> -->
+                <div class="write__doctor">
+                    <div class="report__info" ref="reportContent">
+                        <div class="info__box" style="border: 1px solid #303030;" :title="taskDetail.patientName">
+                            <span class="title print-font">姓名：</span> <span class="info print-font
+                                minxp">TASDH</span> </div>
+                        <div class="info__box" style="border: 1px solid #303030;"> <span class="title
+                                print-font">性别：</span> <span class="info print-font">女</span> </div>
+                        <div class="info__box" style="border: 1px solid #303030;"> <span class="title
+                                print-font">年龄：</span> <span class="info print-font">1岁</span> </div>
+                    </div>
+                    <div class="write__box">
+                        <div class="check-title">检查部位：<span></span></div>
+                        <div class="editor__box dw-editor">
+                            <!--影像所见-->
+                            <!-- <div class="title">{{ doctorCheckTitle }}</div> -->
+                            <div class="title">检查所见：</div>
+                            <div class="editor_print-editor">
+                                <div id="">
+                                    <div id="">
+                                        <div id="">测试报告，本报告作废</div>
+                                    </div>
+                                </div>
+                                <div id="fatherPacsDoctorCheckEl">
+                                    <div id="pacsDoctorCheck">
+                                        <div id="reportStandard">检查方法：中华05方法，应用范围(男性)：R系列2岁至18岁,C系列3岁至13岁6月</div>
+                                        <div id="boneDescription">左腕部可见3枚骨化中心，桡骨远端骨骺可见，尺骨远端骨骺未出现。</div>
+                                        <div id="tableData">
+                                            <div class="bone-table">
+                                                <table class="report-table">
+                                                    <thead class="report-table-thead">
+                                                        <tr>
+                                                            <th class="report-table-thead_text">R系列骨</th>
+                                                            <th class="report-table-thead_text">等级</th>
+                                                            <th class="report-table-thead_text
+                                                                report-table-thead_border">分值</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>桡骨</td>
+                                                            <td>4</td>
+                                                            <td>18</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>尺骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第一掌骨</td>
+                                                            <td>2</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第三掌骨</td>
+                                                            <td>3</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第五掌骨</td>
+                                                            <td>3</td>
+                                                            <td>6</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第一近节指骨</td>
+                                                            <td>3</td>
+                                                            <td>7</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第三近节指骨</td>
+                                                            <td>3</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第五近节指骨</td>
+                                                            <td>3</td>
+                                                            <td>6</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第三中节指骨</td>
+                                                            <td>3</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第五中节指骨</td>
+                                                            <td>3</td>
+                                                            <td>6</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第一远节指骨</td>
+                                                            <td>4</td>
+                                                            <td>9</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第三远节指骨</td>
+                                                            <td>3</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第五远节指骨</td>
+                                                            <td>2</td>
+                                                            <td>4</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> <span>R系列成熟度得分(SMS)81</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> <span>R系列骨龄4岁8月</span> </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <table class="report-table">
+                                                    <thead class="report-table-thead">
+                                                        <tr>
+                                                            <th class="report-table-thead_text">C系列骨</th>
+                                                            <th class="report-table-thead_text">等级</th>
+                                                            <th class="report-table-thead_text
+                                                                report-table-thead_border">分值</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>头状骨</td>
+                                                            <td>4</td>
+                                                            <td>113</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>钩骨</td>
+                                                            <td>4</td>
+                                                            <td>100</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>三角骨</td>
+                                                            <td>2</td>
+                                                            <td>13</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>月骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>舟骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>大多角骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>小多角骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> <span>C系列成熟度得分(SMS)226</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> <span>C系列骨龄4岁3月</span> </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--印象-->
+                        <div class="editor__box dw-editor dw—height">
+                            <!-- <div class="title">{{ diagnoseAdviceTitle }}</div> -->
+                            <div class="title" style="display: inline-block;">
+                                印&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;象：</div>
+                            <div class="editor_print-editor">
+                                <div id="">
+                                    <div id="">
+                                        <div id="">测试报告，本报告作废</div>
+                                    </div>
+                                </div>
+                                <div id="fatherPacsDoctorCheckEl">
+                                    <div id="pacsDoctorCheck">
+                                        <div id="reportStandard">检查方法：中华05方法，应用范围(男性)：R系列2岁至18岁,C系列3岁至13岁6月</div>
+                                        <div id="boneDescription">左腕部可见3枚骨化中心，桡骨远端骨骺可见，尺骨远端骨骺未出现。</div>
+                                        <div id="tableData">
+                                            <div class="bone-table">
+                                                <table class="report-table">
+                                                    <thead class="report-table-thead">
+                                                        <tr>
+                                                            <th class="report-table-thead_text">R系列骨</th>
+                                                            <th class="report-table-thead_text">等级</th>
+                                                            <th class="report-table-thead_text
+                                                                report-table-thead_border">分值</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>桡骨</td>
+                                                            <td>4</td>
+                                                            <td>18</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>尺骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第一掌骨</td>
+                                                            <td>2</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第三掌骨</td>
+                                                            <td>3</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第五掌骨</td>
+                                                            <td>3</td>
+                                                            <td>6</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第一近节指骨</td>
+                                                            <td>3</td>
+                                                            <td>7</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第三近节指骨</td>
+                                                            <td>3</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第五近节指骨</td>
+                                                            <td>3</td>
+                                                            <td>6</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第三中节指骨</td>
+                                                            <td>3</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第五中节指骨</td>
+                                                            <td>3</td>
+                                                            <td>6</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第一远节指骨</td>
+                                                            <td>4</td>
+                                                            <td>9</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第三远节指骨</td>
+                                                            <td>3</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>第五远节指骨</td>
+                                                            <td>2</td>
+                                                            <td>4</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> <span>R系列成熟度得分(SMS)81</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> <span>R系列骨龄4岁8月</span> </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <table class="report-table">
+                                                    <thead class="report-table-thead">
+                                                        <tr>
+                                                            <th class="report-table-thead_text">C系列骨</th>
+                                                            <th class="report-table-thead_text">等级</th>
+                                                            <th class="report-table-thead_text
+                                                                report-table-thead_border">分值</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>头状骨</td>
+                                                            <td>4</td>
+                                                            <td>113</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>钩骨</td>
+                                                            <td>4</td>
+                                                            <td>100</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>三角骨</td>
+                                                            <td>2</td>
+                                                            <td>13</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>月骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>舟骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>大多角骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>小多角骨</td>
+                                                            <td>0</td>
+                                                            <td>---</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                            <td>&nbsp;</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> <span>C系列成熟度得分(SMS)226</span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="3"> <span>C系列骨龄4岁3月</span> </td>
+                                                            
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div :span="24" class="doctor__reporter">
+                        <div class="doctor__box"> <span class="title print-font">报告日期：</span> <span class="info
+                                print-font"> 2021/05/11 </span> </div> <!-- 审核 -->
+                        <div class="doctor__box"> <span class="title print-font">审核医师：</span> <span class="info
+                                print-font" v-if="showReview"> <img
+                                    src="http://cloud-test1.deepwise.com/ris/v1/file?fileId=other/null/fb9293c9c3f343cbb68855893db5cff9.png"
+                                    width="100px" height="40px" style="display: block" /> <span style="display:
+                                    none"> FXY </span> </span> </div> <!-- 报告 -->
+                        <div class="doctor__box"> <span class="title print-font">报告医师：</span> <span class="info
+                                print-font" v-if="showDoctor"> <img
+                                    src="http://cloud-test1.deepwise.com/ris/v1/file?fileId=other/null/fb9293c9c3f343cbb68855893db5cff9.png"
+                                    width="100px" height="40px" style="display: block" /> <span style="display:
+                                    none"> FXY </span> </span> </div>
+                    </div>
+                </div>
+                <div :span="24" class="print__suggest"> *本报告谨供临床医生参考，不作为法律依据* </div>
+            </div>
+        </div>
+</body>
+
+</html>
