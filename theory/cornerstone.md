@@ -111,3 +111,18 @@ A 'dicomcget' image loader could work with a server to issue a DICOM CGET comman
 ```
 
 ### ImageLoader （图片加载器）
+
+Image Loader是一个JavaScript函数，负责获取图像Id，并将对应的图像加载对象返回给Cornerstone
+
+加载图片通常需要请求服务器，而且加载图片的api需要是异步的。cornerstone要求imageloaders返回一个包含promise的对象，并通过这个对象来异步请求image对象。
+
+#### image Loader Workflow
+
+![图片工作流](https://docs.cornerstonejs.org/assets/img/image-loader-workflow.png)
+
+1.image loaders 向cornerstone注册自己，去加载特定的imageid url schemes
+2. 应用程序通过loadimage() 这个api去请求加载一个image
+3. Cornerstone委托请求加载图片的这件事给使用了URL scheme规范的imageID 的image loader，该模式把参数传给了loadImage（）这个方法
+4. imageloader将会返回一个包含Promise的imageload 对象，这个对象将会在对应的图像对象获得了像素信息之后resolve。获取像素数据可能需要使用XMLHttpRequest调用远程服务器，解压这个像素信息，并且转换为一种cornerstone可以理解的格式信息。
+5. 然后使用displayImage() API展示由解析过后的Promise传递回来的图像对象。
+
