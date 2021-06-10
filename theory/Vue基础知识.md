@@ -394,3 +394,12 @@ Vuex的getters则是借助vue的计算属性computed实现数据实时监听。
 Vue.use(plugin, arguments)
 plugin 可以传入一个对象，也可以传一个一个函数，如果传入一个对象，对象中必须包括install方法，但是如果传入函数的话this的指针为null（plugin.apply(null, args)），传入对象的话调用install方法
 会 plugin.install.apply(plugin, args)把this指向该插件
+
+## 27. keep-alive源码学习
+
+大致的缓存流程：
+
+1. vue有个内置组件，这个组件维护着缓存对象和被缓存组件的key名称
+2. 通过你传入的include, exclude判断是否需要缓存当前组件
+3. 而且我们在render函数发现组件永远都只会取第一个子组件内容，而我们案例上的demo组件永远没有机会显示出来，其实也有办法那就是给他们包裹vue提供的另外一个内置组件component（router-view）
+4. 判断显示那个组件， 然后keep-alive会提高当前组件是否设置了白名单或者不是include配置项组件那就直接return vnode,遇到缓存的vnode，先判断缓存对象是否已经存如果存在直接取缓存vnode---（有个小细节，重新调整组件key的位置，目的是为了如果数据最近被访问过，那么将来被访问的几率也更高，因为可能缓存到一定max数，会把keys数组第一个值删除，会遇到删除栈的vnode，这个时候是根据key的位置在操作的，第一个优先删除（cached.componentInstance.$destroy()）) ---，不存在的话往缓存对象添加记录
