@@ -1,33 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
   <script>
-    var change = function(amount, coins) {
-      const n=coins.length
-      var dp=new Array(amount+1).fill(0)
-      dp[0]=1
-      for(let i=0;i<n;i++){
-          for(let j=coins[i];j<=amount;j++){
-            console.log(`i ${i} j ${j} coins ${coins[i]}`)
-            console.log(`dp[${j}] = dp[${j}] + dp[${j-coins[i]}]`)
-            console.log(`before dp[j] ${dp[j]}`)
-            dp[j]= dp[j] + dp[j-coins[i]]
-            console.log(`after dp[j] ${dp[j]}`)
-            console.log(`----------------------`)
-          }
-          console.log(dp)
-      }
-      
-      return dp[amount]
-    }
+    var threeSum = function(nums) {
+      if (nums.length < 3 ) return []
 
-    change(5, [1, 2, 5])
+      nums.sort((a, b) => a - b)
+      if (nums[0] == nums[nums.length - 1] && nums[nums.length - 1] == 0) return [[0, 0, 0]]
+      let temp = []
+
+      for (let i = 0; i < nums.length - 1; i++) {
+          let sum = 0 - nums[i]
+          let arr = [nums[i]]
+          if (i > 0 && nums[i] == nums[i - 1]) continue; // 排除重复的值
+          if (nums[i] > 0) break;
+
+          for (let j = i + 1, k = nums.length -1; j < k;) {
+            if (nums[j] == nums[j - 1] && nums == 0) {
+              j++
+              continue
+            }
+            if (nums[j] + nums[k] > sum) {
+                k--
+            } else {
+              if (nums[j] + nums[k] == sum) {
+                  arr.push(nums[j], nums[k])
+                  temp.push(arr)
+                  arr = [nums[i]]
+              }
+              j++
+            }
+          }
+      }
+
+      return temp
+  }
+
+    console.log(threeSum([-1,0,1,0]))
   </script>
 </body>
+
 </html>
