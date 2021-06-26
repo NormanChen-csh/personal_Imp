@@ -16,32 +16,27 @@
       nums.sort((a, b) => a - b)
       if (nums[0] == nums[nums.length - 1] && nums[nums.length - 1] == 0) return [[0, 0, 0]]
       let temp = []
-      console.log(nums)
+      // console.log(nums)
 
-      for (let i = 0; i < nums.length - 1; i++) {
+      for (let i = 0; i < nums.length; i++) {
           let sum = 0 - nums[i]
-          let arr = [nums[i]]
           if (i > 0 && nums[i] == nums[i - 1]) continue; // 排除重复的值
           if (nums[i] > 0) break;
 
           for (let j = i + 1, k = nums.length -1; j < k;) {
 
             if (nums[j] + nums[k] > sum) {
-                k--
+              k--
+            } else if (nums[j] + nums[k] < sum) {
+              j++
             } else {
               if (nums[j] + nums[k] == sum) {
-                if (nums[j] == nums[j+1]) {
-                  j++
-                } else if (nums[k] == nums[k -1]) {
-                  k--
-                } else {
-                  arr.push(nums[j], nums[k])
-                  temp.push(arr)
-                  arr = [nums[i]]
-                  j++
-                }
+                temp.push([nums[i], nums[j], nums[k]])
+                while (j<k && nums[j] == nums[j+1]) j++; // 去重
+                while (j<k && nums[k] == nums[k-1]) k--; // 去重
+                j++
+                k-- // 得到了目标值要两个值同时向中间移动，不然可能取到重复值
               }
-              j++
             }
           }
       }
@@ -49,7 +44,10 @@
       return temp
   }
 
-    // console.log(threeSum([-1,0,1,0]))
+    console.log(threeSum([-1,0,1,0]))
+    console.log(threeSum([-1,0,1,2,-1,-4]))
+    console.log(threeSum([1,1,-2]))
+    console.log(threeSum([-2,0,1,1,2]))
     console.log(threeSum([-1,0,1,2,-1,-4,-2,-3,3,0,4]))
     console.log(threeSum([-1,0,1,2,-1,-4]))
   </script>
